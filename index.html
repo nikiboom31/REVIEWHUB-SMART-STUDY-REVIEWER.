@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReviewerHub | Smart Study Reviewer</title>
+<style>
+:root{--bg:#f5f6fc;--panel:#fff;--ink:#20233a;--muted:#747991;--primary:#6558d3;--line:#e8e9f2;--soft:#efedff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(115deg,#5548c8,#8175ec);color:white;padding:25px max(5%,calc((100% - 1150px)/2));}
+.brand{font-size:25px;font-weight:800;letter-spacing:.3px}.tag{opacity:.9;margin-top:5px;font-size:14px}
+.wrap{max-width:1150px;margin:28px auto;padding:0 20px}.welcome{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+h1{font-size:26px;margin:0 0 7px}.muted{color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}
+.stat,.panel,.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 5px 18px #29265b08}
+.stat strong{display:block;font-size:27px;color:var(--primary);margin-bottom:4px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+button,.tab{border:0;border-radius:9px;padding:11px 15px;background:var(--soft);color:var(--primary);font-weight:700;cursor:pointer}
+button.primary{background:var(--primary);color:white}button:hover,.tab:hover{filter:brightness(.96)}
+input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;font:inherit;margin:7px 0 12px;background:white}
+textarea{min-height:85px;resize:vertical}.search{max-width:450px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.card h3{margin:8px 0}.pill{display:inline-block;background:var(--soft);color:var(--primary);padding:5px 9px;border-radius:20px;font-size:12px;font-weight:700}
+.card p{color:var(--muted);line-height:1.5}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.hidden{display:none!important}.question{font-size:18px;font-weight:700;margin:15px 0}
+.option{display:block;width:100%;text-align:left;margin:8px 0;background:#f6f6fb;color:var(--ink);border:1px solid var(--line)}
+.feedback{font-weight:700;margin-top:12px}.flash{font-size:23px;line-height:1.5;text-align:center;padding:35px 15px;min-height:145px}
+footer{text-align:center;color:var(--muted);padding:28px;font-size:13px}
+@media(max-width:600px){.stats{grid-template-columns:1fr}.welcome{align-items:flex-start}header{padding:22px}}
+</style>
+</head>
+<body>
+<header><div class="brand">📚 REVIEWERHUB</div><div class="tag">SMART STUDY REVIEWER — Learn smarter. Review better.</div></header>
+<main class="wrap">
+  <section class="welcome">
+    <div><h1>Welcome, Student! 👋</h1><div class="muted">Your personal space to learn, practice, and succeed.</div></div>
+    <button class="primary" onclick="showTab('add')">＋ Add Reviewer</button>
+  </section>
+  <section class="stats">
+    <div class="stat"><strong id="totalCount">0</strong><span class="muted">Study topics</span></div>
+    <div class="stat"><strong id="quizCount">0</strong><span class="muted">Quiz questions</span></div>
+    <div class="stat"><strong id="savedCount">0</strong><span class="muted">Your saved topics</span></div>
+  </section>
+  <nav class="tabs">
+    <button onclick="showTab('home')">Dashboard</button>
+    <button onclick="showTab('reviewers')">Reviewers</button>
+    <button onclick="showTab('flashcards')">Flashcards</button>
+    <button onclick="showTab('quiz')">Practice Quiz</button>
+    <button onclick="showTab('add')">Add Reviewer</button>
+  </nav>
+
+  <section id="home" class="panel">
+    <h2>Start learning today</h2><p class="muted">Choose a topic below or search for a lesson you want to study.</p>
+    <input class="search" id="homeSearch" placeholder="🔎 Search your lessons..." oninput="renderCards('homeResults',this.value)">
+    <div id="homeResults" class="grid"></div>
+  </section>
+
+  <section id="reviewers" class="panel hidden">
+    <h2>All Reviewers</h2>
+    <input class="search" id="reviewSearch" placeholder="Search by title, subject, or keyword..." oninput="renderCards('allResults',this.value)">
+    <div id="allResults" class="grid"></div>
+  </section>
+
+  <section id="flashcards" class="panel hidden">
+    <h2>Flashcards</h2><p class="muted">Test your memory. Tap “Flip card” to reveal the answer.</p>
+    <div class="card"><div class="pill" id="flashSubject">STUDY CARD</div><div class="flash" id="flashText">Press Start to begin!</div>
+    <div class="actions" style="justify-content:center"><button onclick="startFlash()">Start / Next</button><button class="primary" onclick="flipFlash()">Flip card</button></div></div>
+  </section>
+
+  <section id="quiz" class="panel hidden">
+    <h2>Practice Quiz</h2><p class="muted">Answer the question and check your result.</p>
+    <div id="quizArea"><button class="primary" onclick="startQuiz()">Start Quiz</button></div>
+  </section>
+
+  <section id="add" class="panel hidden">
+    <h2>Add a Study Reviewer</h2>
+    <form id="addForm">
+      <label>Topic title</label><input id="title" required placeholder="Example: Introduction to Biology">
+      <label>Subject</label><input id="subject" required placeholder="Example: Science">
+      <label>Short lesson / definition</label><textarea id="content" required placeholder="Write the lesson you want to remember..."></textarea>
+      <label>Flashcard question</label><input id="question" required placeholder="Example: What is biology?">
+      <label>Flashcard answer</label><input id="answer" required placeholder="Example: The study of life">
+      <label>Quiz question</label><input id="quizQuestion" required placeholder="Write a multiple-choice question">
+      <label>Choices (separate each choice with a comma)</label><input id="choices" required placeholder="Choice A, Choice B, Choice C, Choice D">
+      <label>Correct answer (must match one choice)</label><input id="correct" required placeholder="Correct choice">
+      <button class="primary" type="submit">Save Reviewer</button>
+    </form>
+    <p class="muted">Your reviewers are saved in this browser using local storage.</p>
+  </section>
+</main>
+<footer>© 2026 ReviewerHub — Smart Study Reviewer</footer>
+<script>
+const starter=[
+ {id:1,title:"Introduction to Biology",subject:"Science",content:"Biology is the scientific study of life and living organisms. It explores their structure, function, growth, and environment.",question:"What is the study of life called?",answer:"Biology",quizQuestion:"What does biology study?",choices:["Living organisms","Planets","Rocks","Weather"],correct:"Living organisms"},
+ {id:2,title:"Parts of a Computer",subject:"ICT",content:"The main parts of a computer system include the CPU, monitor, keyboard, and mouse. The CPU processes instructions.",question:"What is known as the brain of the computer?",answer:"CPU (Central Processing Unit)",quizQuestion:"Which component processes instructions?",choices:["Monitor","CPU","Keyboard","Mouse"],correct:"CPU"},
+ {id:3,title:"Basic Mathematics",subject:"Mathematics",content:"Addition combines quantities. Subtraction finds the difference. Multiplication is repeated addition, while division separates a quantity into equal groups.",question:"What operation is repeated addition?",answer:"Multiplication",quizQuestion:"What is 8 × 7?",choices:["54","56","64","48"],correct:"56"}
+];
+let custom=JSON.parse(localStorage.getItem("reviewerhub_topics")||"[]");
+let topics=[...starter,...custom], flashIndex=0, showingAnswer=false, quizIndex=0, score=0, quizSet=[];
+function updateStats(){document.getElementById("totalCount").textContent=topics.length;document.getElementById("quizCount").textContent=topics.length;document.getElementById("savedCount").textContent=custom.length}
+function showTab(id){document.querySelectorAll("main>section.panel").forEach(x=>x.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");if(id==="home")renderCards("homeResults",document.getElementById("homeSearch").value);if(id==="reviewers")renderCards("allResults",document.getElementById("reviewSearch").value)}
+function renderCards(target,term=""){let q=term.toLowerCase();let found=topics.filter(t=>(t.title+" "+t.subject+" "+t.content).toLowerCase().includes(q));document.getElementById(target).innerHTML=found.length?found.map(t=>`<article class="card"><span class="pill">${safe(t.subject)}</span><h3>${safe(t.title)}</h3><p>${safe(t.content.slice(0,125))}${t.content.length>125?"…":""}</p><button onclick="readTopic(${t.id})">Read lesson</button></article>`).join(""):"<p class='muted'>No matching topics. Try another search or add a reviewer.</p>"}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function readTopic(id){let t=topics.find(x=>x.id===id);alert(t.title+"\\n\\n"+t.content)}
+document.getElementById("addForm").addEventListener("submit",e=>{e.preventDefault();let choices=document.getElementById("choices").value.split(",").map(x=>x.trim()).filter(Boolean),correct=document.getElementById("correct").value.trim();if(choices.length<2||!choices.includes(correct)){alert("Please enter at least two choices and make sure the correct answer matches one choice.");return}
+let item={id:Date.now(),title:title.value.trim(),subject:subject.value.trim(),content:content.value.trim(),question:question.value.trim(),answer:answer.value.trim(),quizQuestion:quizQuestion.value.trim(),choices,correct};custom.push(item);localStorage.setItem("reviewerhub_topics",JSON.stringify(custom));topics=[...starter,...custom];e.target.reset();updateStats();alert("Reviewer saved successfully!");showTab("reviewers")});
+function startFlash(){if(!topics.length)return;flashIndex=(flashIndex+1)%topics.length;showingAnswer=false;document.getElementById("flashSubject").textContent=topics[flashIndex].subject;document.getElementById("flashText").textContent=topics[flashIndex].question}
+function flipFlash(){if(!topics.length)return;if(!topics[flashIndex])flashIndex=0;showingAnswer=!showingAnswer;document.getElementById("flashText").textContent=showingAnswer?topics[flashIndex].answer:topics[flashIndex].question}
+function startQuiz(){quizSet=[...topics].sort(()=>Math.random()-.5);quizIndex=0;score=0;showQuestion()}
+function showQuestion(){let area=document.getElementById("quizArea");if(quizIndex>=quizSet.length){area.innerHTML=`<h3>Quiz completed! 🎉</h3><p>You scored <b>${score} / ${quizSet.length}</b>.</p><button class="primary" onclick="startQuiz()">Try Again</button>`;return}let t=quizSet[quizIndex];area.innerHTML=`<div class="pill">Question ${quizIndex+1} of ${quizSet.length}</div><div class="question">${safe(t.quizQuestion)}</div>${t.choices.map(c=>`<button class="option" onclick="answerQuiz('${encodeURIComponent(c)}')">${safe(c)}</button>`).join("")}<div id="feedback" class="feedback"></div>`}
+function answerQuiz(encoded){let chosen=decodeURIComponent(encoded),t=quizSet[quizIndex],fb=document.getElementById("feedback");document.querySelectorAll(".option").forEach(b=>b.disabled=true);if(chosen===t.correct){score++;fb.textContent="Correct! Great job.";fb.style.color="green"}else{fb.textContent="Not quite. Correct answer: "+t.correct;fb.style.color="#c04444"}let next=document.createElement("button");next.className="primary";next.textContent="Next question";next.style.marginTop="12px";next.onclick=()=>{quizIndex++;showQuestion()};fb.after(next)}
+updateStats();renderCards("homeResults");renderCards("allResults");
+</script>
+</body>
+</html>
