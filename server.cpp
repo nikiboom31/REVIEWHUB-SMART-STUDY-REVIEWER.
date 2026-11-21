@@ -4,7 +4,6 @@
 #include <openssl/rand.h>
 #include <nlohmann/json.hpp>
 #include <iostream>
-#include <string>
 #include <unordered_map>
 #include <mutex>
 #include <sstream>
@@ -119,11 +118,21 @@ int main() {
             jsonResponse(res,201,{{"topic",{{"id",id},{"title",title},{"subject",subject},{"content",content},{"question",question},{"answer",answer},{"quizQuestion",quiz},{"choices",choices},{"correct",correct}}}});
         }catch(...){jsonResponse(res,400,{{"error","Invalid reviewer data."}});}
     });
-    server.set_mount_point("/",".");
-    std::cout<<"REVIEWHUB server running at http://localhost:8080\nPress Ctrl+C to stop.\n";
-    if(!server.const char* port_env = std::getenv("PORT");
-int port = port_env ? std::stoi(port_env) : 8080;
 
-server.listen("0.0.0.0", port);{std::cerr<<"Could not start server. Is port 8080 already in use?\n";sqlite3_close(db);return 1;}
-    sqlite3_close(db);return 0;
+    server.set_mount_point("/", ".");
+
+    const char* port_env = std::getenv("PORT");
+    int port = port_env ? std::stoi(port_env) : 8080;
+
+    std::cout << "REVIEWHUB server running on port " << port << "\n";
+
+    if (!server.listen("0.0.0.0", port)) {
+        std::cerr << "Could not start server.\n";
+        sqlite3_close(db);
+        return 1;
+    }
+
+    sqlite3_close(db);
+    return 0;
 }
+

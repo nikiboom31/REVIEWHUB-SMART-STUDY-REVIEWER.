@@ -1,9 +1,12 @@
 
+
 FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y \
-    g++ cmake make \
-    libsqlite3-dev libssl-dev \
+    g++ \
+    libsqlite3-dev \
+    libssl-dev \
+    nlohmann-json3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
