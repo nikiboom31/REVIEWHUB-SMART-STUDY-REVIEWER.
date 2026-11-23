@@ -13,6 +13,7 @@ COPY . .
 
 RUN g++ server.cpp -o reviewhub \
     -std=c++17 -O2 -pthread \
+    -I/usr/include/postgresql \
     -lssl -lcrypto -lpq
 
 CMD ["./reviewhub"]
