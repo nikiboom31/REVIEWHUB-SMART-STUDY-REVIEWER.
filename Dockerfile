@@ -1,4 +1,3 @@
-
 FROM ubuntu:22.04
 
 RUN apt-get update && apt-get install -y \
@@ -6,7 +5,6 @@ RUN apt-get update && apt-get install -y \
     make \
     libssl-dev \
     libpq-dev \
-    nlohmann-json3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
