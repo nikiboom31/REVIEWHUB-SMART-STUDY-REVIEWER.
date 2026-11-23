@@ -1,20 +1,18 @@
-FROM debian:bookworm-slim
+FROM ubuntu:22.04
 
 RUN apt-get update && apt-get install -y \
     g++ \
-    libcpp-httplib-dev \
-    libpq-dev \
+    make \
     libssl-dev \
-    nlohmann-json3-dev \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+
 COPY . .
 
 RUN g++ server.cpp -o reviewhub \
     -std=c++17 -O2 -pthread \
-    -I/usr/include \
     -lssl -lcrypto -lpq
 
-EXPOSE 10000
 CMD ["./reviewhub"]
