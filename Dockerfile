@@ -18,6 +18,7 @@ COPY . .
 RUN mkdir -p public && \
     g++ server.cpp -o reviewhub \
 -      -std=c++17 -O2 -pthread \
+-      -std=c++17 -O2 -pthread \
 -      -I/usr/include/postgresql \
 -     -lcpp-httplib -lssl -lcrypto -lpq
 
