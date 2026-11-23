@@ -13,6 +13,7 @@
 #include <memory>
 #include <vector>
 #include <mutex>
+#include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 using PgResult = std::unique_ptr<PGresult, decltype(&PQclear)>;
