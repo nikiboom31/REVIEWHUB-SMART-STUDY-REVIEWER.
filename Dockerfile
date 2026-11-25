@@ -14,12 +14,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 COPY . .
--
+
 RUN mkdir -p public && \
     g++ server.cpp -o reviewhub \
--      -std=c++17 -O2 -pthread \
--      -std=c++17 -O2 -pthread \
--      -I/usr/include/postgresql \
--     -lcpp-httplib -lssl -lcrypto -lpq
+      -std=c++17 -O2 -pthread \
+      -I/usr/include/postgresql \
+      -lssl -lcrypto -lpq
 
 CMD ["./reviewhub"]
