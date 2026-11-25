@@ -82,4 +82,481 @@ $('onlineSearch').addEventListener('input',()=>setPortalLinks($('onlineSearch').
 $('onlineSearchForm').addEventListener('submit',async e=>{e.preventDefault();const term=$('onlineSearch').value.trim();if(!term)return;setPortalLinks(term);$('onlineStatus').textContent='Searching Wikipedia educational references…';$('onlineResults').innerHTML='';try{const url='https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(term)+'&gsrlimit=8&prop=extracts&exintro=1&explaintext=1&exchars=420&format=json&origin=*';const response=await fetch(url);if(!response.ok)throw new Error('Online search is temporarily unavailable.');const data=await response.json();const pages=Object.values(data.query?.pages||{});if(!pages.length){$('onlineStatus').textContent='No online results found. Try a broader keyword.';return}$('onlineStatus').textContent='Found '+pages.length+' online reference results. These are external articles, not REVIEWHUB-authored lessons.';$('onlineResults').innerHTML=pages.map(page=>`<article class="online-card"><span class="pill">ONLINE REFERENCE</span><h3>${safe(page.title||'Untitled')}</h3><p>${safe(page.extract||'Open the article to read more.')}</p><a href="https://en.wikipedia.org/?curid=${encodeURIComponent(page.pageid)}" target="_blank" rel="noopener noreferrer">Read reference ↗</a></article>`).join('')}catch(err){$('onlineStatus').textContent=err.message+' You can still use the Khan Academy, OpenStax, and MIT OpenCourseWare links.';$('onlineResults').innerHTML=''}});
 
 checkSession();
+  <style>
+  #rh-lesson-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 9999;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  #rh-lesson-backdrop.open {
+    display: flex;
+  }
+  #rh-lesson-modal {
+    background: #ffffff;
+    color: #0f172a;
+    width: 100%;
+    max-width: 760px;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    padding: 24px;
+  }
+  .rh-modal-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 14px;
+  }
+  .rh-badge {
+    display: inline-block;
+    background: #dcfce7;
+    color: #166534;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 6px;
+  }
+  .rh-title {
+    margin: 0;
+    font-size: 22px;
+  }
+  .rh-close-btn {
+    background: #f1f5f9;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .rh-close-btn:hover {
+    background: #e2e8f0;
+  }
+  .rh-steps-bar {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .rh-step-tab {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #334155;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .rh-step-tab.active {
+    background: #14532d;
+    color: #ffffff;
+    border-color: #14532d;
+  }
+  .rh-lesson-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+  .rh-lesson-box h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+  }
+  .rh-qa-heading {
+    margin: 0 0 10px;
+    font-size: 16px;
+  }
+  .rh-qa-item {
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+  .rh-q-btn {
+    width: 100%;
+    text-align: left;
+    background: #ffffff;
+    border: none;
+    padding: 14px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+  .rh-q-btn:hover {
+    background: #f0fdf4;
+  }
+  .rh-q-toggle {
+    font-size: 12px;
+    font-weight: 700;
+    color: #166534;
+    background: #dcfce7;
+    padding: 4px 10px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .rh-a-panel {
+    display: none;
+    padding: 12px 16px 14px;
+    background: #f0fdf4;
+    border-top: 1px solid #bbf7d0;
+    color: #14532d;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .rh-a-panel.open {
+    display: block;
+  }
+  .rh-nav-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid #e2e8f0;
+  }
+  .rh-nav-btn {
+    background: #14532d;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .rh-nav-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+  }
+</style>
+
+<div id="rh-lesson-backdrop" role="dialog" aria-modal="true" aria-labelledby="rh-modal-title">
+  <div id="rh-lesson-modal">
+    <div class="rh-modal-top">
+      <div>
+        <span class="rh-badge" id="rh-modal-subject">Subject</span>
+        <h2 class="rh-title" id="rh-modal-title">Topic Title</h2>
+      </div>
+      <button type="button" class="rh-close-btn" id="rh-close-lesson">Close ✕</button>
+    </div>
+
+    <div class="rh-steps-bar" id="rh-steps-bar"></div>
+    <div class="rh-lesson-box" id="rh-lesson-content"></div>
+
+    <h3 class="rh-qa-heading">Clickable Questions &amp; Answers (Tap a question to view answer)</h3>
+    <div id="rh-qa-list"></div>
+
+    <div class="rh-nav-footer">
+      <button type="button" class="rh-nav-btn" id="rh-prev-lesson">← Previous Lesson</button>
+      <span id="rh-step-counter" style="font-size:13px;color:#475569;font-weight:600;"></span>
+      <button type="button" class="rh-nav-btn" id="rh-next-lesson">Next Lesson →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const CURATED_LESSONS = {
+    "Fractions and Decimals": [
+      {
+        stepLabel: "Lesson 1",
+        title: "Parts of a Whole & Place Value",
+        summary: "A fraction shows equal parts of a whole (numerator over denominator). Decimals represent tenths, hundredths, and thousandths using base-10 place value.",
+        qa: [
+          {
+            q: "What does the bottom number (denominator) of a fraction tell you?",
+            a: "It tells you how many equal parts make up one whole. For example, in 3/4, the whole is divided into 4 equal parts and you have 3 of them."
+          },
+          {
+            q: "What place value is the 7 in 0.47?",
+            a: "The 7 is in the hundredths place (7/100), because the first digit after the decimal point is tenths and the second is hundredths."
+          }
+        ]
+      },
+      {
+        stepLabel: "Lesson 2",
+        title: "Converting Between Fractions and Decimals",
+        summary: "To change a fraction to a decimal, divide the top number by the bottom number. To change a terminating decimal to a fraction, write it over 10, 100, or 1,000 and simplify.",
+        qa: [
+          {
+            q: "How do you convert 3/5 into a decimal?",
+            a: "Divide 3 by 5: 3 ÷ 5 = 0.6."
+          },
+          {
+            q: "What is 0.25 as a simplified fraction?",
+            a: "0.25 = 25/100, which simplifies by dividing top and bottom by 25 to 1/4."
+          }
+        ]
+      },
+      {
+        stepLabel: "Lesson 3",
+        title: "Comparing & Everyday Problem Solving",
+        summary: "Convert values to a common format (all decimals or all fractions) before comparing or adding them in real-world measurements and money problems.",
+        qa: [
+          {
+            q: "Which is larger: 0.5 or 2/5?",
+            a: "0.5 is larger. 2/5 equals 0.4, and 0.5 > 0.4."
+          },
+          {
+            q: "If you walk 0.75 km in the morning and 1/2 km in the afternoon, how far did you walk in total?",
+            a: "1/2 km = 0.5 km, so 0.75 + 0.5 = 1.25 km (or 1 1/4 km)."
+          }
+        ]
+      }
+    ],
+    "Linear Equations": [
+      {
+        stepLabel: "Lesson 1",
+        title: "Variables, Constants & Equality",
+        summary: "A linear equation has variables raised to the first power and an equals sign acting like a balanced scale.",
+        qa: [
+          {
+            q: "Why is 2x + 3 = 11 called a linear equation?",
+            a: "Because the variable x has an exponent of 1 (not squared or cubed), so its graph forms a straight line."
+          },
+          {
+            q: "What golden rule keeps an equation balanced when solving?",
+            a: "Whatever operation you perform on one side of the equals sign, you must perform the exact same operation on the other side."
+          }
+        ]
+      },
+      {
+        stepLabel: "Lesson 2",
+        title: "One-Step and Two-Step Solving",
+        summary: "Undo addition/subtraction first, then undo multiplication/division to isolate the variable.",
+        qa: [
+          {
+            q: "Solve for x: 2x + 4 = 14",
+            a: "x = 5. First subtract 4 from both sides (2x = 10), then divide both sides by 2 (x = 5)."
+          },
+          {
+            q: "Solve for y: y - 7 = 12",
+            a: "y = 19. Add 7 to both sides to isolate y."
+          }
+        ]
+      },
+      {
+        stepLabel: "Lesson 3",
+        title: "Checking Solutions & Word Problems",
+        summary: "Substitute your answer back into the original equation to verify both sides match.",
+        qa: [
+          {
+            q: "How do you check if x = 5 solves 2x + 4 = 14?",
+            a: "Replace x with 5: 2(5) + 4 = 10 + 4 = 14, which matches the right side."
+          },
+          {
+            q: "A notebook costs $3 plus a $2 pen. If you spend $11 on n notebooks and 1 pen, what equation models this?",
+            a: "3n + 2 = 11 (giving n = 3 notebooks)."
+          }
+        ]
+      }
+    ]
+  };
+
+  function buildFallbackLessons(title, subject, description) {
+    const cleanDesc = (description || "").trim();
+    return [
+      {
+        stepLabel: "Lesson 1",
+        title: `${title}: Core Concepts`,
+        summary: cleanDesc || `Introduction to ${title} under ${subject}. Focus on the main definitions and foundational ideas before moving to applications.`,
+        qa: [
+          {
+            q: `What is the main focus of "${title}"?`,
+            a: cleanDesc || `"${title}" covers the core principles and terminology of ${subject} so you can recognize key patterns quickly.`
+          },
+          {
+            q: "What should you do first when starting Lesson 1?",
+            a: "Read the core definition carefully, identify key terms, and make sure you understand the basic example before moving to Lesson 2."
+          }
+        ]
+      },
+      {
+        stepLabel: "Lesson 2",
+        title: `${title}: Step-by-Step Rules & Examples`,
+        summary: `Break ${title} down into clear steps: identify what is given, apply the rule or process for ${subject}, and work through an example carefully.`,
+        qa: [
+          {
+            q: `How do you apply ${title} accurately without skipping steps?`,
+            a: "List what is given first, apply one rule at a time in order, and double-check units, signs, or conditions at each step."
+          },
+          {
+            q: "Why practice step-by-step examples before a quiz?",
+            a: "Working through structured steps builds muscle memory and helps you spot where mistakes usually happen."
+          }
+        ]
+      },
+      {
+        stepLabel: "Lesson 3",
+        title: `${title}: Review & Self-Check`,
+        summary: `Summarize the key takeaways of ${title} and test your recall with self-check questions without looking back immediately.`,
+        qa: [
+          {
+            q: `Can you explain "${title}" in two sentences in your own words?`,
+            a: "If you can state what it is and when to use it clearly without reading the notes, you have a solid grasp of the topic."
+          },
+          {
+            q: "What if a question feels tricky during review?",
+            a: "Return to Lesson 1 or Lesson 2 to review the underlying rule, re-read the prompt carefully, and try again."
+          }
+        ]
+      }
+    ];
+  }
+
+  let activeLessons = [];
+  let activeStepIndex = 0;
+  const openAnswers = new Set();
+
+  const backdrop = document.getElementById("rh-lesson-backdrop");
+  const modalSubject = document.getElementById("rh-modal-subject");
+  const modalTitle = document.getElementById("rh-modal-title");
+  const stepsBar = document.getElementById("rh-steps-bar");
+  const lessonContent = document.getElementById("rh-lesson-content");
+  const qaList = document.getElementById("rh-qa-list");
+  const stepCounter = document.getElementById("rh-step-counter");
+  const prevBtn = document.getElementById("rh-prev-lesson");
+  const nextBtn = document.getElementById("rh-next-lesson");
+
+  function renderStep() {
+    const lesson = activeLessons[activeStepIndex];
+    if (!lesson) return;
+
+    stepsBar.innerHTML = "";
+    activeLessons.forEach((item, idx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "rh-step-tab" + (idx === activeStepIndex ? " active" : "");
+      btn.textContent = `${item.stepLabel}: ${item.title.split(":")[0]}`;
+      btn.addEventListener("click", () => {
+        activeStepIndex = idx;
+        renderStep();
+      });
+      stepsBar.appendChild(btn);
+    });
+
+    lessonContent.innerHTML = `
+      <h3>${escapeHtml(lesson.stepLabel)} — ${escapeHtml(lesson.title)}</h3>
+      <p style="margin:0;">${escapeHtml(lesson.summary)}</p>
+    `;
+
+    qaList.innerHTML = "";
+    lesson.qa.forEach((entry, qIdx) => {
+      const key = `${activeStepIndex}-${qIdx}`;
+      const isOpen = openAnswers.has(key);
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "rh-qa-item";
+
+      const qBtn = document.createElement("button");
+      qBtn.type = "button";
+      qBtn.className = "rh-q-btn";
+      qBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      qBtn.innerHTML = `
+        <span>Q${qIdx + 1}. ${escapeHtml(entry.q)}</span>
+        <span class="rh-q-toggle">${isOpen ? "Hide Answer" : "Show Answer"}</span>
+      `;
+
+      const aPanel = document.createElement("div");
+      aPanel.className = "rh-a-panel" + (isOpen ? " open" : "");
+      aPanel.innerHTML = `<strong>Answer:</strong> ${escapeHtml(entry.a)}`;
+
+      qBtn.addEventListener("click", () => {
+        if (openAnswers.has(key)) {
+          openAnswers.delete(key);
+        } else {
+          openAnswers.add(key);
+        }
+        renderStep();
+      });
+
+      wrapper.appendChild(qBtn);
+      wrapper.appendChild(aPanel);
+      qaList.appendChild(wrapper);
+    });
+
+    stepCounter.textContent = `Step ${activeStepIndex + 1} of ${activeLessons.length}`;
+    prevBtn.disabled = activeStepIndex === 0;
+    nextBtn.disabled = activeStepIndex === activeLessons.length - 1;
+  }
+
+  function openLessonModal({ title, subject, description }) {
+    modalTitle.textContent = title || "Lesson";
+    modalSubject.textContent = subject || "Reviewer";
+    openAnswers.clear();
+    activeStepIndex = 0;
+    activeLessons = CURATED_LESSONS[title] || buildFallbackLessons(title, subject, description);
+    renderStep();
+    backdrop.classList.add("open");
+  }
+
+  function closeLessonModal() {
+    backdrop.classList.remove("open");
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  document.getElementById("rh-close-lesson").addEventListener("click", closeLessonModal);
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) closeLessonModal();
+  });
+  prevBtn.addEventListener("click", () => {
+    if (activeStepIndex > 0) {
+      activeStepIndex -= 1;
+      renderStep();
+    }
+  });
+  nextBtn.addEventListener("click", () => {
+    if (activeStepIndex < activeLessons.length - 1) {
+      activeStepIndex += 1;
+      renderStep();
+    }
+  });
+
+  // Intercept "Open lesson" button clicks on any topic card
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("button, a");
+    if (!btn) return;
+    const label = btn.textContent.trim().toLowerCase();
+    if (label === "open lesson" || label === "open") {
+      e.preventDefault();
+      e.stopPropagation();
+      const card = btn.closest(".card, .topic-card, .reviewer-card, article, li, div");
+      const heading = card ? card.querySelector("h1, h2, h3, h4, .title, strong") : null;
+      const badge = card ? card.querySelector(".badge, .tag, .subject, span") : null;
+      const para = card ? card.querySelector("p") : null;
+      openLessonModal({
+        title: heading ? heading.textContent.trim() : "Study Lesson",
+        subject: badge ? badge.textContent.trim() : "General",
+        description: para ? para.textContent.trim() : ""
+      });
+    }
+  }, true);
+})();
+</script>
 </script></body></html>
