@@ -247,7 +247,7 @@ int main() {
     };
 
     server.Post("/api/register", [&](const httplib::Request& r, httplib::Response& s) { auth(r, s, true); });
-    server.Post("/api/login", [&](const httplib::Request& r, httplib::Response& s) { auth(r, s, false); });
+    server.Post("/api/login", [&](const httplib::Request& r, httplib::Response& s) {std::cout << "[LOGIN] Attempt received" << std::endl; auth(r, s, false); });
 
     server.Post("/api/logout", [&](const httplib::Request& req, httplib::Response& res) {
         try {
