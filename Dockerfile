@@ -11,9 +11,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN g++ server.cpp -o reviewhub \
-    -std=c++17 -lsqlite3 -lssl -lcrypto -pthread
-
+RUN mkdir -p public && \
+    g++ -std=c++17 -O2 server.cpp -o reviewhub \
+      -I/usr/include/postgresql \
+      -pthread -lssl -lcrypto -lpq
 EXPOSE 10000
 
 CMD ["./reviewhub"]
