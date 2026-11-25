@@ -87,13 +87,13 @@ checkSession();
   #rh-lesson-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.6);
+    background: rgba(15, 23, 42, 0.65);
     display: none;
     align-items: center;
     justify-content: center;
     padding: 16px;
     z-index: 9999;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
   #rh-lesson-backdrop.open {
     display: flex;
@@ -102,88 +102,202 @@ checkSession();
     background: #ffffff;
     color: #0f172a;
     width: 100%;
-    max-width: 760px;
-    max-height: 88vh;
+    max-width: 860px;
+    max-height: 90vh;
     overflow-y: auto;
-    border-radius: 14px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+    padding: 26px;
   }
   .rh-modal-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 12px;
+    gap: 14px;
     border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 14px;
+    padding-bottom: 16px;
   }
   .rh-badge {
     display: inline-block;
     background: #dcfce7;
     color: #166534;
     font-size: 12px;
-    font-weight: 600;
-    padding: 3px 10px;
+    font-weight: 700;
+    padding: 4px 11px;
     border-radius: 999px;
     margin-bottom: 6px;
   }
   .rh-title {
     margin: 0;
-    font-size: 22px;
+    font-size: 24px;
+    line-height: 1.25;
+  }
+  .rh-subtitle {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #475569;
   }
   .rh-close-btn {
     background: #f1f5f9;
-    border: none;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
     border-radius: 8px;
-    padding: 8px 12px;
+    padding: 8px 14px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    flex-shrink: 0;
   }
   .rh-close-btn:hover {
     background: #e2e8f0;
   }
   .rh-steps-bar {
-    display: flex;
-    gap: 8px;
-    margin: 16px 0;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 18px 0;
+  }
+  @media (max-width: 640px) {
+    .rh-steps-bar {
+      grid-template-columns: 1fr;
+    }
   }
   .rh-step-tab {
+    text-align: left;
     border: 1px solid #cbd5e1;
     background: #f8fafc;
-    color: #334155;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
+    color: #1e293b;
+    padding: 11px 14px;
+    border-radius: 10px;
     cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .rh-step-tab:hover {
+    border-color: #15803d;
+    background: #f0fdf4;
   }
   .rh-step-tab.active {
     background: #14532d;
     color: #ffffff;
     border-color: #14532d;
   }
-  .rh-lesson-box {
+  .rh-step-tag {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.85;
+  }
+  .rh-step-name {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  .rh-lesson-card {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 18px;
-    line-height: 1.6;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
   }
-  .rh-lesson-box h3 {
+  .rh-lesson-card h3 {
     margin: 0 0 8px;
-    font-size: 17px;
+    font-size: 19px;
+    color: #0f172a;
+  }
+  .rh-overview {
+    margin: 0 0 14px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #1e293b;
+  }
+  .rh-section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .rh-detail-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 13px 15px;
+  }
+  .rh-detail-box h4 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #166534;
+  }
+  .rh-detail-box ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #334155;
+  }
+  .rh-detail-box li {
+    margin-bottom: 5px;
+  }
+  .rh-example-box {
+    margin-top: 12px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #2563eb;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1e3a8a;
+  }
+  .rh-pitfall-box {
+    margin-top: 10px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 4px solid #d97706;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #78350f;
+  }
+  .rh-qa-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
   }
   .rh-qa-heading {
-    margin: 0 0 10px;
-    font-size: 16px;
+    margin: 0;
+    font-size: 17px;
+    color: #0f172a;
+  }
+  .rh-qa-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .rh-mini-btn {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #1e293b;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 11px;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+  .rh-mini-btn:hover {
+    background: #e2e8f0;
   }
   .rh-qa-item {
     border: 1px solid #cbd5e1;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 11px;
+    margin-bottom: 11px;
     overflow: hidden;
     background: #ffffff;
   }
@@ -192,7 +306,7 @@ checkSession();
     text-align: left;
     background: #ffffff;
     border: none;
-    padding: 14px 16px;
+    padding: 15px 17px;
     font-size: 15px;
     font-weight: 600;
     color: #0f172a;
@@ -210,39 +324,50 @@ checkSession();
     font-weight: 700;
     color: #166534;
     background: #dcfce7;
-    padding: 4px 10px;
+    padding: 4px 11px;
     border-radius: 999px;
     flex-shrink: 0;
   }
   .rh-a-panel {
     display: none;
-    padding: 12px 16px 14px;
+    padding: 14px 17px 16px;
     background: #f0fdf4;
     border-top: 1px solid #bbf7d0;
     color: #14532d;
     font-size: 14px;
-    line-height: 1.55;
+    line-height: 1.65;
   }
   .rh-a-panel.open {
     display: block;
+  }
+  .rh-a-explain {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed #86efac;
+    font-size: 13.5px;
+    color: #166534;
   }
   .rh-nav-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 18px;
-    padding-top: 14px;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
     border-top: 1px solid #e2e8f0;
   }
   .rh-nav-btn {
     background: #14532d;
     color: #ffffff;
     border: none;
-    border-radius: 8px;
+    border-radius: 9px;
     padding: 10px 16px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+  }
+  .rh-nav-btn:hover:not(:disabled) {
+    background: #166534;
   }
   .rh-nav-btn:disabled {
     background: #94a3b8;
@@ -256,19 +381,26 @@ checkSession();
       <div>
         <span class="rh-badge" id="rh-modal-subject">Subject</span>
         <h2 class="rh-title" id="rh-modal-title">Topic Title</h2>
+        <p class="rh-subtitle" id="rh-modal-subtitle">Step-by-step structured lessons &amp; interactive Q&amp;A</p>
       </div>
       <button type="button" class="rh-close-btn" id="rh-close-lesson">Close ✕</button>
     </div>
 
     <div class="rh-steps-bar" id="rh-steps-bar"></div>
-    <div class="rh-lesson-box" id="rh-lesson-content"></div>
+    <div class="rh-lesson-card" id="rh-lesson-content"></div>
 
-    <h3 class="rh-qa-heading">Clickable Questions &amp; Answers (Tap a question to view answer)</h3>
+    <div class="rh-qa-header">
+      <h3 class="rh-qa-heading">Interactive Lesson Questions (Click any question to reveal answer)</h3>
+      <div class="rh-qa-actions">
+        <button type="button" class="rh-mini-btn" id="rh-expand-all">Show All Answers</button>
+        <button type="button" class="rh-mini-btn" id="rh-collapse-all">Hide All Answers</button>
+      </div>
+    </div>
     <div id="rh-qa-list"></div>
 
     <div class="rh-nav-footer">
       <button type="button" class="rh-nav-btn" id="rh-prev-lesson">← Previous Lesson</button>
-      <span id="rh-step-counter" style="font-size:13px;color:#475569;font-weight:600;"></span>
+      <span id="rh-step-counter" style="font-size:13px;color:#334155;font-weight:700;"></span>
       <button type="button" class="rh-nav-btn" id="rh-next-lesson">Next Lesson →</button>
     </div>
   </div>
@@ -276,50 +408,107 @@ checkSession();
 
 <script>
 (function () {
-  const CURATED_LESSONS = {
+  const DETAILED_TOPICS = {
     "Fractions and Decimals": [
       {
         stepLabel: "Lesson 1",
-        title: "Parts of a Whole & Place Value",
-        summary: "A fraction shows equal parts of a whole (numerator over denominator). Decimals represent tenths, hundredths, and thousandths using base-10 place value.",
+        shortName: "Core Concepts & Place Value",
+        title: "Understanding Fractions, Decimals & Place Value",
+        overview: "Fractions and decimals are two ways to represent parts of a whole or quantities between whole numbers. A fraction uses a numerator (parts taken) and a denominator (equal parts in one whole), while a decimal uses base-10 place value after a decimal point.",
+        keyPoints: [
+          "Numerator = how many equal parts you have; Denominator = total equal parts in one whole (never 0).",
+          "Decimal places to the right of the point: tenths (1/10), hundredths (1/100), thousandths (1/1,000).",
+          "Equivalent fractions represent the exact same value using different numbers (e.g., 1/2 = 2/4 = 5/10)."
+        ],
+        formulasOrRules: [
+          "Decimal place value: 0.d1 d2 d3 = d1/10 + d2/100 + d3/1,000",
+          "Equivalent fraction rule: multiply or divide both numerator and denominator by the same non-zero number."
+        ],
+        workedExample: "In the number 0.36, '3' is in the tenths place (3/10) and '6' is in the hundredths place (6/100). Together, 0.36 = 36/100, which simplifies by dividing numerator and denominator by 4 to 9/25.",
+        commonPitfall: "Adding fraction numerators and denominators straight across (like 1/2 + 1/3 = 2/5) is incorrect—you must first find a common denominator (3/6 + 2/6 = 5/6).",
         qa: [
           {
-            q: "What does the bottom number (denominator) of a fraction tell you?",
-            a: "It tells you how many equal parts make up one whole. For example, in 3/4, the whole is divided into 4 equal parts and you have 3 of them."
+            q: "In the fraction 5/8, what does 5 represent and what does 8 represent?",
+            a: "5 is the numerator (5 parts being considered), and 8 is the denominator (the whole is divided into 8 equal parts).",
+            explain: "Think of a pizza cut into 8 equal slices: taking 5 slices gives 5/8 of the pizza."
           },
           {
-            q: "What place value is the 7 in 0.47?",
-            a: "The 7 is in the hundredths place (7/100), because the first digit after the decimal point is tenths and the second is hundredths."
+            q: "What is the value of the digit 9 in the decimal 4.192?",
+            a: "The value of 9 is 0.09 (nine hundredths, or 9/100).",
+            explain: "Moving right from the decimal point: 1 is in the tenths place (0.1), 9 is in the hundredths place (0.09), and 2 is in the thousandths place (0.002)."
+          },
+          {
+            q: "Which fraction is equivalent to 3/4 with a denominator of 12?",
+            a: "9/12.",
+            explain: "To get from denominator 4 to 12, multiply by 3. Multiply the numerator 3 by 3 as well to get 9/12."
           }
         ]
       },
       {
         stepLabel: "Lesson 2",
-        title: "Converting Between Fractions and Decimals",
-        summary: "To change a fraction to a decimal, divide the top number by the bottom number. To change a terminating decimal to a fraction, write it over 10, 100, or 1,000 and simplify.",
+        shortName: "Conversions & Operations",
+        title: "Converting Between Fractions & Decimals and Computing",
+        overview: "Converting between fractions and decimals makes comparing, ordering, and calculating much easier. You convert a fraction to a decimal by dividing numerator by denominator, and convert a decimal to a fraction by using its place-value denominator and simplifying.",
+        keyPoints: [
+          "Fraction to decimal: divide top ÷ bottom (long division or known benchmarks like 1/4 = 0.25, 1/2 = 0.5, 3/4 = 0.75).",
+          "Terminating decimal to fraction: write digits over 10, 100, or 1,000 based on the last place value, then reduce to lowest terms.",
+          "Adding/subtracting decimals: line up the decimal points vertically and pad trailing zeros if needed."
+        ],
+        formulasOrRules: [
+          "Fraction → Decimal: a / b = a ÷ b",
+          "Decimal → Fraction: 0.ab = ab / 100 (then divide by GCD)"
+        ],
+        workedExample: "Convert 7/20 to a decimal: 7 ÷ 20 = 0.35. Now convert 0.80 to a simplified fraction: 80/100 = 4/5 after dividing top and bottom by 20.",
+        commonPitfall: "When converting a decimal like 0.4 to a fraction, writing 4/10 is unsimplified—always reduce by dividing common factors to get 2/5.",
         qa: [
           {
-            q: "How do you convert 3/5 into a decimal?",
-            a: "Divide 3 by 5: 3 ÷ 5 = 0.6."
+            q: "How do you convert 3/8 into a decimal?",
+            a: "0.375.",
+            explain: "Divide 3 by 8: 8 goes into 3.000 three times (24, remainder 6), into 60 seven times (56, remainder 4), and into 40 five times (40, remainder 0) → 0.375."
           },
           {
-            q: "What is 0.25 as a simplified fraction?",
-            a: "0.25 = 25/100, which simplifies by dividing top and bottom by 25 to 1/4."
+            q: "What is 1.65 written as a mixed number in simplest form?",
+            a: "1 13/20 (or improper fraction 33/20).",
+            explain: "The whole part is 1. The decimal .65 is 65/100, which divides by 5 to become 13/20."
+          },
+          {
+            q: "What is 2.4 + 1.35?",
+            a: "3.75.",
+            explain: "Align decimal points: 2.40 + 1.35 = 3.75."
           }
         ]
       },
       {
         stepLabel: "Lesson 3",
-        title: "Comparing & Everyday Problem Solving",
-        summary: "Convert values to a common format (all decimals or all fractions) before comparing or adding them in real-world measurements and money problems.",
+        shortName: "Comparing & Word Problems",
+        title: "Comparing Values & Solving Multi-Step Word Problems",
+        overview: "In word problems involving money, measurements, recipes, or distances, values often appear in mixed forms. Convert everything into the same form first, identify the operation required, and check whether your answer makes sense.",
+        keyPoints: [
+          "Always match formats before comparing or combining (for example, change 3/5 to 0.6 when comparing with 0.58).",
+          "Watch clue words: 'total/combined' often signals addition; 'difference/left over/remaining' signals subtraction.",
+          "Check reasonableness: a small fraction of a number should be smaller than the starting value."
+        ],
+        formulasOrRules: [
+          "Remaining amount = Total amount − Used amount",
+          "Compare only after expressing in matching units or equivalent forms."
+        ],
+        workedExample: "A ribbon is 2.5 meters long. You cut off 3/4 meter (0.75 m). Remaining length = 2.50 − 0.75 = 1.75 meters (or 1 3/4 m).",
+        commonPitfall: "Comparing digits without looking at place value—for instance, thinking 0.4 is smaller than 0.25 because 4 < 25. Actually 0.40 > 0.25.",
         qa: [
           {
-            q: "Which is larger: 0.5 or 2/5?",
-            a: "0.5 is larger. 2/5 equals 0.4, and 0.5 > 0.4."
+            q: "Order from least to greatest: 0.45, 1/2, 0.38",
+            a: "0.38, 0.45, 1/2.",
+            explain: "Convert 1/2 to 0.50. Comparing 0.38, 0.45, and 0.50 from smallest to largest gives 0.38, 0.45, 1/2."
           },
           {
-            q: "If you walk 0.75 km in the morning and 1/2 km in the afternoon, how far did you walk in total?",
-            a: "1/2 km = 0.5 km, so 0.75 + 0.5 = 1.25 km (or 1 1/4 km)."
+            q: "You have $10.00 and spend $4.25 and 1/2 of a dollar. How much money is left?",
+            a: "$5.25.",
+            explain: "1/2 of a dollar is $0.50. Total spent = $4.25 + $0.50 = $4.75. Remaining = $10.00 − $4.75 = $5.25."
+          },
+          {
+            q: "Why is checking reasonableness important after solving a fraction/decimal word problem?",
+            a: "It catches unit mismatches, decimal placement mistakes, or wrong operations before you finalize your answer.",
+            explain: "If you subtract a piece from a 5 m board and get 6.2 m, you immediately know an error occurred."
           }
         ]
       }
@@ -327,97 +516,321 @@ checkSession();
     "Linear Equations": [
       {
         stepLabel: "Lesson 1",
-        title: "Variables, Constants & Equality",
-        summary: "A linear equation has variables raised to the first power and an equals sign acting like a balanced scale.",
+        shortName: "Terms & Balance Rule",
+        title: "Linear Equations, Variables & The Balance Property",
+        overview: "A linear equation states that two expressions are equal, with the variable raised only to the first power (exponent 1). Think of the equals sign (=) as a balanced scale: doing the same valid operation to both sides keeps equality true.",
+        keyPoints: [
+          "Variable (like x or n): an unknown symbol; Coefficient: the number multiplying a variable (in 5x, the coefficient is 5); Constant: a standalone number (in 5x + 2, 2 is a constant).",
+          "Linear equations never have x^2, x^3, or variables in denominators in standard basic form.",
+          "A solution is any value of the variable that makes the left side equal the right side."
+        ],
+        formulasOrRules: [
+          "Standard linear form: ax + b = c (where a ≠ 0)",
+          "Addition/Subtraction/Multiplication/Division Property of Equality: if A = B, then A + k = B + k, A − k = B − k, kA = kB, and A/k = B/k (k ≠ 0)."
+        ],
+        workedExample: "In 4x − 3 = 13: the variable is x, the coefficient of x is 4, −3 and 13 are constants, and x = 4 is a solution because 4(4) − 3 = 16 − 3 = 13.",
+        commonPitfall: "Changing only one side of the equation (for example, subtracting 5 on the left side without subtracting 5 on the right side).",
         qa: [
           {
-            q: "Why is 2x + 3 = 11 called a linear equation?",
-            a: "Because the variable x has an exponent of 1 (not squared or cubed), so its graph forms a straight line."
+            q: "In the equation 3m + 7 = 22, what are the variable, coefficient, and constants?",
+            a: "Variable: m; Coefficient: 3; Constants: 7 and 22.",
+            explain: "m is the unknown, 3 multiplies m, and 7 and 22 stand alone without variables."
           },
           {
-            q: "What golden rule keeps an equation balanced when solving?",
-            a: "Whatever operation you perform on one side of the equals sign, you must perform the exact same operation on the other side."
+            q: "Is x = 6 a solution to 2x + 5 = 17?",
+            a: "Yes.",
+            explain: "Substitute x = 6 into the left side: 2(6) + 5 = 12 + 5 = 17, which equals the right side (17)."
+          },
+          {
+            q: "Why is x^2 + 3 = 12 not a basic linear equation?",
+            a: "Because x is raised to the second power (x^2), making it quadratic rather than linear.",
+            explain: "Linear equations have variables only to the first power."
           }
         ]
       },
       {
         stepLabel: "Lesson 2",
-        title: "One-Step and Two-Step Solving",
-        summary: "Undo addition/subtraction first, then undo multiplication/division to isolate the variable.",
+        shortName: "Solving Steps",
+        title: "Step-by-Step Solving: One-Step & Two-Step Equations",
+        overview: "To solve for the variable, isolate it on one side using inverse (opposite) operations. In two-step equations, it is usually cleanest to undo addition or subtraction first, then undo multiplication or division.",
+        keyPoints: [
+          "Inverse pairs: addition ↔ subtraction, and multiplication ↔ division.",
+          "When solving ax + b = c: first add/subtract b on both sides to get ax = c − b, then divide both sides by a.",
+          "Keep every step aligned neatly line by line so signs (+ / −) stay easy to track."
+        ],
+        formulasOrRules: [
+          "Step 1: Eliminate constant term (+b / −b) on both sides",
+          "Step 2: Divide (or multiply by reciprocal) to make the variable coefficient equal 1"
+        ],
+        workedExample: "Solve 3x + 6 = 21: Subtract 6 from both sides → 3x = 15. Divide both sides by 3 → x = 5.",
+        commonPitfall: "Dropping a negative sign in front of a term—for example, treating 10 − 2x = 4 as +2x instead of −2x.",
         qa: [
           {
-            q: "Solve for x: 2x + 4 = 14",
-            a: "x = 5. First subtract 4 from both sides (2x = 10), then divide both sides by 2 (x = 5)."
+            q: "Solve for x: 5x − 9 = 16",
+            a: "x = 5.",
+            explain: "Add 9 to both sides: 5x = 25. Divide both sides by 5: x = 5."
           },
           {
-            q: "Solve for y: y - 7 = 12",
-            a: "y = 19. Add 7 to both sides to isolate y."
+            q: "Solve for n: n / 4 + 3 = 8",
+            a: "n = 20.",
+            explain: "Subtract 3 from both sides: n / 4 = 5. Multiply both sides by 4: n = 20."
+          },
+          {
+            q: "Solve for x: 12 − 3x = 3",
+            a: "x = 3.",
+            explain: "Subtract 12 from both sides: −3x = −9. Divide both sides by −3: x = 3."
           }
         ]
       },
       {
         stepLabel: "Lesson 3",
-        title: "Checking Solutions & Word Problems",
-        summary: "Substitute your answer back into the original equation to verify both sides match.",
+        shortName: "Word Problems & Checking",
+        title: "Translating Word Problems & Verifying Solutions",
+        overview: "Real-world problems become linear equations when there is a starting amount or fixed fee (constant) and a per-item or per-hour rate (coefficient times variable). Always verify your answer by plugging it back into the original problem.",
+        keyPoints: [
+          "Define your variable clearly (e.g., 'Let h = number of hours worked').",
+          "Per-unit / each / every usually pairs with multiplication (rate × variable); flat fee / initial value usually acts as a constant.",
+          "Always plug your final number back into the original equation—not an intermediate step."
+        ],
+        formulasOrRules: [
+          "Total = (Rate × Variable) + Fixed Amount",
+          "Check: Left Side(solution) = Right Side(solution)"
+        ],
+        workedExample: "A gym charges a $15 joining fee plus $10 per month. If total cost is $65, let m = months: 10m + 15 = 65 → 10m = 50 → m = 5 months. Check: 10(5) + 15 = 65.",
+        commonPitfall: "Swapping the variable and the total—for example, writing 15m + 10 = 65 when $15 is the one-time fee and $10 is the monthly rate.",
         qa: [
           {
-            q: "How do you check if x = 5 solves 2x + 4 = 14?",
-            a: "Replace x with 5: 2(5) + 4 = 10 + 4 = 14, which matches the right side."
+            q: "A taxi charges a $4 base fare plus $2 per kilometer. You pay $18. What equation finds distance k in km?",
+            a: "2k + 4 = 18 (which gives k = 7 km).",
+            explain: "$2 per km is 2k, plus the $4 base fare equals $18 total. Subtract 4 → 2k = 14 → k = 7."
           },
           {
-            q: "A notebook costs $3 plus a $2 pen. If you spend $11 on n notebooks and 1 pen, what equation models this?",
-            a: "3n + 2 = 11 (giving n = 3 notebooks)."
+            q: "How do you confirm whether x = −2 is correct for 4x + 10 = 2?",
+            a: "Substitute x = −2 into 4x + 10: 4(−2) + 10 = −8 + 10 = 2, which matches the right side.",
+            explain: "Because both sides equal 2, x = −2 is verified."
+          },
+          {
+            q: "Why should you plug your answer into the original equation rather than a later line?",
+            a: "If you made an arithmetic mistake on an earlier step, a later equation could repeat that error while hiding the mistake.",
+            explain: "Checking the original equation tests the true starting statement."
+          }
+        ]
+      }
+    ],
+    "Number Line": [
+      {
+        stepLabel: "Lesson 1",
+        shortName: "Structure & Ordering",
+        title: "How a Number Line Works: Scale, Zero & Ordering",
+        overview: "A number line is a straight line with evenly spaced tick marks representing numbers in order. Moving right increases value and moving left decreases value, with zero separating positive and negative numbers.",
+        keyPoints: [
+          "Tick marks must be equally spaced—even if the scale counts by 1s, 2s, 5s, 10s, or fractions.",
+          "Numbers to the right are always greater than numbers to the left (e.g., −1 > −5).",
+          "Opposite numbers (like +4 and −4) sit at the exact same distance from 0 on opposite sides."
+        ],
+        formulasOrRules: [
+          "Further right = greater value (a > b if a is right of b)",
+          "Distance from 0 = absolute value |x| (always ≥ 0)"
+        ],
+        workedExample: "On a number line from −5 to 5: −2 is to the right of −4, so −2 > −4. Both −2 and +2 are 2 units away from 0.",
+        commonPitfall: "Thinking −10 is larger than −3 because 10 > 3. On a number line, −10 is much further to the left, so −10 < −3.",
+        qa: [
+          {
+            q: "Which number is greater: −6 or −2?",
+            a: "−2 is greater.",
+            explain: "On a horizontal number line, −2 lies to the right of −6, meaning −2 > −6."
+          },
+          {
+            q: "How far is −7 from 0 on a number line?",
+            a: "7 units.",
+            explain: "Distance is never negative; |−7| = 7 units to the left of 0."
+          },
+          {
+            q: "What is the opposite of −9?",
+            a: "9 (or +9).",
+            explain: "Opposites are the same distance from 0 on opposite sides of the number line."
+          }
+        ]
+      },
+      {
+        stepLabel: "Lesson 2",
+        shortName: "Hops for + and −",
+        title: "Adding and Subtracting Using Jumps on a Number Line",
+        overview: "A number line turns addition and subtraction into jumps or directions. Start at the first number, then move right or left depending on whether you are adding or subtracting positive or negative values.",
+        keyPoints: [
+          "Start at the first number on the number line.",
+          "Adding a positive number (+k) moves k steps RIGHT; subtracting a positive number (−k) moves k steps LEFT.",
+          "Subtracting a negative number (x − (−k)) has the same effect as adding +k (moving k steps RIGHT)."
+        ],
+        formulasOrRules: [
+          "Start at a, add +b → move b units RIGHT to a + b",
+          "Start at a, subtract +b → move b units LEFT to a − b",
+          "a − (−b) = a + b"
+        ],
+        workedExample: "Start at −3 and subtract 4 (−3 − 4): begin at −3 and jump 4 units to the LEFT → land on −7.",
+        commonPitfall: "Moving right when subtracting a positive number (for example, doing 2 − 5 and landing at +7 instead of −3).",
+        qa: [
+          {
+            q: "Where do you land if you start at −1 and move 5 units to the right?",
+            a: "4.",
+            explain: "−1 + 5: hopping 1 unit right reaches 0, and 4 more units right reaches 4."
+          },
+          {
+            q: "Where do you land if you start at 3 and move 6 units to the left?",
+            a: "−3.",
+            explain: "3 − 6: hopping 3 units left reaches 0, and 3 more units left reaches −3."
+          },
+          {
+            q: "Why does 5 − (−2) equal 7 on a number line?",
+            a: "Subtracting −2 reverses direction to move 2 units right from 5, landing on 7.",
+            explain: "Subtracting a negative is the opposite of subtracting a positive, so 5 − (−2) = 5 + 2 = 7."
+          }
+        ]
+      },
+      {
+        stepLabel: "Lesson 3",
+        shortName: "Fractions, Decimals & Gaps",
+        title: "Fractions, Decimals & Finding Distance Between Points",
+        overview: "Any interval between two whole numbers—such as between 0 and 1—can be split into equal parts for fractions and decimals. You can also count the number of units between two points to find the distance between them.",
+        keyPoints: [
+          "If the space between 0 and 1 is split into 4 equal parts, each tick mark is 1/4 (0.25): 0, 1/4, 2/4 (1/2), 3/4, 1.",
+          "Decimals like 0.5 and 0.75 sit halfway and three-quarters of the way from 0 to 1.",
+          "Distance between two points on a number line is always a positive number of units."
+        ],
+        formulasOrRules: [
+          "Equal interval size = (End − Start) ÷ Number of equal parts",
+          "Distance between A and B = |A − B|"
+        ],
+        workedExample: "Between 0 and 1, there are 5 equal spaces (tenths). The 3rd tick mark to the right of 0 is 3/10 (0.3). Distance from −2 to 3 is 5 units.",
+        commonPitfall: "Counting tick marks instead of spaces/intervals when finding fractions—splitting 0 to 1 into fourths means 4 equal gaps, not 4 extra marks past 1.",
+        qa: [
+          {
+            q: "If the segment from 0 to 1 is divided into 2 equal parts, what fraction/decimal is at the middle mark?",
+            a: "1/2 (or 0.5).",
+            explain: "One of two equal parts between 0 and 1 is halfway, which equals 1/2 or 0.5."
+          },
+          {
+            q: "What is the distance on a number line between −4 and 2?",
+            a: "6 units.",
+            explain: "From −4 to 0 is 4 units, and from 0 to 2 is 2 units; 4 + 2 = 6 units total."
+          },
+          {
+            q: "Between 0 and 1 split into 4 equal intervals, where is 0.75?",
+            a: "At the 3rd mark after 0 (3/4).",
+            explain: "Each mark is 0.25: 0.25 (1st), 0.50 (2nd), 0.75 (3rd), 1.00 (4th)."
           }
         ]
       }
     ]
   };
 
-  function buildFallbackLessons(title, subject, description) {
+  function buildRichFallbackLessons(title, subject, description) {
+    const cleanTitle = (title || "This Topic").trim();
+    const cleanSubject = (subject || "General Study").trim();
     const cleanDesc = (description || "").trim();
+
     return [
       {
         stepLabel: "Lesson 1",
-        title: `${title}: Core Concepts`,
-        summary: cleanDesc || `Introduction to ${title} under ${subject}. Focus on the main definitions and foundational ideas before moving to applications.`,
+        shortName: "Core Concepts",
+        title: `${cleanTitle}: Core Concepts & Terminology`,
+        overview: cleanDesc
+          ? `${cleanDesc} In Lesson 1, focus on building a clear mental model of ${cleanTitle} within ${cleanSubject} before solving complex problems.`
+          : `Lesson 1 introduces the foundational ideas, key vocabulary, and big picture of ${cleanTitle} in ${cleanSubject}.`,
+        keyPoints: [
+          `Identify the core definition of ${cleanTitle} and why it matters in ${cleanSubject}.`,
+          "List the key terms or components and state each one in plain, everyday language.",
+          "Notice how this topic connects to earlier concepts you already know."
+        ],
+        formulasOrRules: [
+          `Core Idea Check: Can I define "${cleanTitle}" without looking at the card?`,
+          `Context Rule: Know when ${cleanTitle} applies versus when a different rule or concept is needed.`
+        ],
+        workedExample: `Suppose you are studying "${cleanTitle}" for a ${cleanSubject} review: start by writing a 2-sentence summary of what it is, then highlight 2–3 keywords you expect to see on a test question.`,
+        commonPitfall: "Memorizing definitions word-for-word without understanding what they mean in practice—always translate technical terms into clear ideas.",
         qa: [
           {
-            q: `What is the main focus of "${title}"?`,
-            a: cleanDesc || `"${title}" covers the core principles and terminology of ${subject} so you can recognize key patterns quickly.`
+            q: `What is the central idea of "${cleanTitle}" in ${cleanSubject}?`,
+            a: cleanDesc || `"${cleanTitle}" explains a core concept or process in ${cleanSubject} that you use to analyze problems and answer exam questions.`,
+            explain: "Summarizing the big idea first helps you organize details instead of treating facts as random disconnected items."
           },
           {
-            q: "What should you do first when starting Lesson 1?",
-            a: "Read the core definition carefully, identify key terms, and make sure you understand the basic example before moving to Lesson 2."
+            q: `How should you study key terms in Lesson 1 of "${cleanTitle}"?`,
+            a: "Pair each term with its meaning and a concrete example rather than reading the list passively.",
+            explain: "Connecting a term to an example makes recall much faster during quizzes and exams."
+          },
+          {
+            q: "When are you ready to move from Lesson 1 to Lesson 2?",
+            a: "Once you can explain the main concept in your own words and recognize its key terms.",
+            explain: "Lesson 2 builds rules and step-by-step methods on top of Lesson 1's foundation."
           }
         ]
       },
       {
         stepLabel: "Lesson 2",
-        title: `${title}: Step-by-Step Rules & Examples`,
-        summary: `Break ${title} down into clear steps: identify what is given, apply the rule or process for ${subject}, and work through an example carefully.`,
+        shortName: "Rules & Step-by-Step Method",
+        title: `${cleanTitle}: Rules, Steps & Worked Examples`,
+        overview: `Lesson 2 focuses on how to apply ${cleanTitle} methodically. Breaking a problem into clear steps prevents careless errors and gives you a reliable process when a question looks unfamiliar.`,
+        keyPoints: [
+          "Step A: Read the prompt carefully and identify what is given and what is being asked.",
+          `Step B: Apply the rule, formula, or procedure for ${cleanTitle} one step at a time.`,
+          "Step C: Check units, signs, conditions, or logical fit before writing your final answer."
+        ],
+        formulasOrRules: [
+          "Method: Given → Rule/Process → Step-by-Step Execution → Verification",
+          "Never skip intermediate steps when learning a new procedure."
+        ],
+        workedExample: `When working through an example on "${cleanTitle}", write down each step on its own line so you can trace where any mistake happens if your result looks off.`,
+        commonPitfall: "Rushing to a final answer in one jump and skipping middle steps, which makes errors hard to spot and fix.",
         qa: [
           {
-            q: `How do you apply ${title} accurately without skipping steps?`,
-            a: "List what is given first, apply one rule at a time in order, and double-check units, signs, or conditions at each step."
+            q: `What is the safest step-by-step approach to solving a "${cleanTitle}" problem?`,
+            a: "Identify what is given and what is asked, choose the matching rule/process, execute step by step, and double-check the result.",
+            explain: "Following a consistent sequence keeps you calm and accurate even on multi-part questions."
           },
           {
-            q: "Why practice step-by-step examples before a quiz?",
-            a: "Working through structured steps builds muscle memory and helps you spot where mistakes usually happen."
+            q: "Why is writing out intermediate steps helpful during practice?",
+            a: "It shows your exact reasoning and makes it easy to pinpoint which step went wrong if an answer is incorrect.",
+            explain: "Debugging one step is much easier than guessing why a final answer missed."
+          },
+          {
+            q: "What should you do if you get stuck mid-problem in Lesson 2?",
+            a: "Go back to the first step where you are 100% sure, verify your setup, and check if a rule or condition was misread.",
+            explain: "Most mistakes start in the problem setup or an early sign/condition."
           }
         ]
       },
       {
         stepLabel: "Lesson 3",
-        title: `${title}: Review & Self-Check`,
-        summary: `Summarize the key takeaways of ${title} and test your recall with self-check questions without looking back immediately.`,
+        shortName: "Applications & Self-Check",
+        title: `${cleanTitle}: Real-World Use, Pitfalls & Mastery Check`,
+        overview: `Lesson 3 tests whether you can apply ${cleanTitle} independently, avoid common traps, and explain your reasoning clearly under review conditions.`,
+        keyPoints: [
+          `Look for real-world or test scenarios where ${cleanTitle} is tested in a slightly disguised way.`,
+          "Watch out for common traps such as misreading 'except/not', forgetting units, or mixing up similar rules.",
+          "Test yourself with active recall—try answering each clickable question below before opening its answer."
+        ],
+        formulasOrRules: [
+          "Active Recall Rule: Attempt the answer in your head first, then click the question to check.",
+          "Review Loop: Re-visit any question you missed after a short break."
+        ],
+        workedExample: `Before clicking a question below, say your answer out loud or jot it down, then click the question to compare your reasoning against the answer and explanation.`,
+        commonPitfall: "Clicking 'Show Answer' immediately without trying first—it feels easy in the moment but weakens memory retention.",
         qa: [
           {
-            q: `Can you explain "${title}" in two sentences in your own words?`,
-            a: "If you can state what it is and when to use it clearly without reading the notes, you have a solid grasp of the topic."
+            q: `How can you test true mastery of "${cleanTitle}" before an exam?`,
+            a: "Solve practice questions without notes, explain why your answer is right, and check that you can handle variations of the problem.",
+            explain: "True understanding means adapting to a new wording, not just repeating one memorized example."
           },
           {
-            q: "What if a question feels tricky during review?",
-            a: "Return to Lesson 1 or Lesson 2 to review the underlying rule, re-read the prompt carefully, and try again."
+            q: "What is the best way to handle a question you get wrong during self-check?",
+            a: "Read the explanation to see why the right answer works, note the trap you fell into, and try a similar question later.",
+            explain: "Mistakes are diagnostic clues that show exactly what to reinforce."
+          },
+          {
+            q: `Once you finish Lesson 3 of "${cleanTitle}", what is a smart next step?`,
+            a: "Close the lesson modal, try your ReviewHub flashcard/quiz tools on the topic, or move to the next card on your board.",
+            explain: "Combining step-by-step lessons with active quizzes locks concepts into long-term memory."
           }
         ]
       }
@@ -431,12 +844,15 @@ checkSession();
   const backdrop = document.getElementById("rh-lesson-backdrop");
   const modalSubject = document.getElementById("rh-modal-subject");
   const modalTitle = document.getElementById("rh-modal-title");
+  const modalSubtitle = document.getElementById("rh-modal-subtitle");
   const stepsBar = document.getElementById("rh-steps-bar");
   const lessonContent = document.getElementById("rh-lesson-content");
   const qaList = document.getElementById("rh-qa-list");
   const stepCounter = document.getElementById("rh-step-counter");
   const prevBtn = document.getElementById("rh-prev-lesson");
   const nextBtn = document.getElementById("rh-next-lesson");
+  const expandAllBtn = document.getElementById("rh-expand-all");
+  const collapseAllBtn = document.getElementById("rh-collapse-all");
 
   function renderStep() {
     const lesson = activeLessons[activeStepIndex];
@@ -447,7 +863,10 @@ checkSession();
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "rh-step-tab" + (idx === activeStepIndex ? " active" : "");
-      btn.textContent = `${item.stepLabel}: ${item.title.split(":")[0]}`;
+      btn.innerHTML = `
+        <span class="rh-step-tag">${escapeHtml(item.stepLabel)}</span>
+        <span class="rh-step-name">${escapeHtml(item.shortName || item.title)}</span>
+      `;
       btn.addEventListener("click", () => {
         activeStepIndex = idx;
         renderStep();
@@ -455,9 +874,29 @@ checkSession();
       stepsBar.appendChild(btn);
     });
 
+    const keyPointsHtml = (lesson.keyPoints || [])
+      .map((pt) => `<li>${escapeHtml(pt)}</li>`)
+      .join("");
+
+    const rulesHtml = (lesson.formulasOrRules || [])
+      .map((r) => `<li>${escapeHtml(r)}</li>`)
+      .join("");
+
     lessonContent.innerHTML = `
-      <h3>${escapeHtml(lesson.stepLabel)} — ${escapeHtml(lesson.title)}</h3>
-      <p style="margin:0;">${escapeHtml(lesson.summary)}</p>
+      <h3>${escapeHtml(lesson.stepLabel)}: ${escapeHtml(lesson.title)}</h3>
+      <p class="rh-overview">${escapeHtml(lesson.overview)}</p>
+      <div class="rh-section-grid">
+        <div class="rh-detail-box">
+          <h4>Key Takeaways</h4>
+          <ul>${keyPointsHtml}</ul>
+        </div>
+        <div class="rh-detail-box">
+          <h4>Rules &amp; Steps</h4>
+          <ul>${rulesHtml}</ul>
+        </div>
+      </div>
+      ${lesson.workedExample ? `<div class="rh-example-box"><strong>Worked Example:</strong> ${escapeHtml(lesson.workedExample)}</div>` : ""}
+      ${lesson.commonPitfall ? `<div class="rh-pitfall-box"><strong>Watch Out (Common Mistake):</strong> ${escapeHtml(lesson.commonPitfall)}</div>` : ""}
     `;
 
     qaList.innerHTML = "";
@@ -479,7 +918,10 @@ checkSession();
 
       const aPanel = document.createElement("div");
       aPanel.className = "rh-a-panel" + (isOpen ? " open" : "");
-      aPanel.innerHTML = `<strong>Answer:</strong> ${escapeHtml(entry.a)}`;
+      aPanel.innerHTML = `
+        <div><strong>Answer:</strong> ${escapeHtml(entry.a)}</div>
+        ${entry.explain ? `<div class="rh-a-explain"><strong>Why / How:</strong> ${escapeHtml(entry.explain)}</div>` : ""}
+      `;
 
       qBtn.addEventListener("click", () => {
         if (openAnswers.has(key)) {
@@ -495,19 +937,22 @@ checkSession();
       qaList.appendChild(wrapper);
     });
 
-    stepCounter.textContent = `Step ${activeStepIndex + 1} of ${activeLessons.length}`;
+    stepCounter.textContent = `Lesson ${activeStepIndex + 1} of ${activeLessons.length} • ${lesson.qa.length} Questions`;
     prevBtn.disabled = activeStepIndex === 0;
     nextBtn.disabled = activeStepIndex === activeLessons.length - 1;
   }
 
   function openLessonModal({ title, subject, description }) {
-    modalTitle.textContent = title || "Lesson";
+    const cleanTitle = title || "Study Lesson";
+    modalTitle.textContent = cleanTitle;
     modalSubject.textContent = subject || "Reviewer";
+    modalSubtitle.textContent = `3-Part Step-by-Step Guide • ${cleanTitle}`;
     openAnswers.clear();
     activeStepIndex = 0;
-    activeLessons = CURATED_LESSONS[title] || buildFallbackLessons(title, subject, description);
+    activeLessons = DETAILED_TOPICS[cleanTitle] || buildRichFallbackLessons(cleanTitle, subject, description);
     renderStep();
     backdrop.classList.add("open");
+    document.getElementById("rh-lesson-modal").scrollTop = 0;
   }
 
   function closeLessonModal() {
@@ -522,6 +967,20 @@ checkSession();
       .replace(/"/g, "&quot;");
   }
 
+  expandAllBtn.addEventListener("click", () => {
+    const lesson = activeLessons[activeStepIndex];
+    if (!lesson) return;
+    lesson.qa.forEach((_, qIdx) => openAnswers.add(`${activeStepIndex}-${qIdx}`));
+    renderStep();
+  });
+
+  collapseAllBtn.addEventListener("click", () => {
+    const lesson = activeLessons[activeStepIndex];
+    if (!lesson) return;
+    lesson.qa.forEach((_, qIdx) => openAnswers.delete(`${activeStepIndex}-${qIdx}`));
+    renderStep();
+  });
+
   document.getElementById("rh-close-lesson").addEventListener("click", closeLessonModal);
   backdrop.addEventListener("click", (e) => {
     if (e.target === backdrop) closeLessonModal();
@@ -530,12 +989,14 @@ checkSession();
     if (activeStepIndex > 0) {
       activeStepIndex -= 1;
       renderStep();
+      document.getElementById("rh-lesson-modal").scrollTop = 0;
     }
   });
   nextBtn.addEventListener("click", () => {
     if (activeStepIndex < activeLessons.length - 1) {
       activeStepIndex += 1;
       renderStep();
+      document.getElementById("rh-lesson-modal").scrollTop = 0;
     }
   });
 
