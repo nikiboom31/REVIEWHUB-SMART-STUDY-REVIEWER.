@@ -352,6 +352,17 @@ int main() {
     res.set_content(buf.str(), "text/html");
 });
 
+    int port = 10000;
+const char* portEnv = std::getenv("PORT");
+if (portEnv && *portEnv) {
+    try {
+        port = std::stoi(portEnv);
+    } catch (...) {
+        std::cerr << "Invalid PORT environment variable\n";
+        PQfinish(db);
+        return 1;
+    }
+}
     std::cout << "ReviewHub connected to database; listening on port " << port << "\n";
     if (!server.listen("0.0.0.0", port)) {
         std::cerr << "Could not start server on port " << port << "\n";
