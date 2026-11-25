@@ -11,6 +11,7 @@
 #include <memory>
 #include <mutex>
 #include <sstream>
+#include <fstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -339,18 +340,17 @@ int main() {
         }
     });
 
-    server.set_mount_point("/", "./public");
-
-    const char* portEnv = std::getenv("PORT");
-    int port = 10000;
-    if (portEnv && *portEnv) {
-        try {
-            port = std::stoi(portEnv);
-        } catch (...) {
-            std::cerr << "Invalid PORT environment variable\n";
-            PQfinish(db);
-            return 1;
-        }
+   server.Get("/", [](const httplib::Request&, httplib::Response& res) {
+    std::ifstream ifs("index.html");
+    if (!ifs) {
+        res.status = 404;
+        res.set_content("index.html not found", "text/plain");
+        return;
+    }
+    std::ostringstream buf;
+    buf << ifs.rdbuf();
+    res.set_content(buf.str(), "text/html");
+});
     }
 
     std::cout << "ReviewHub connected to database; listening on port " << port << "\n";
