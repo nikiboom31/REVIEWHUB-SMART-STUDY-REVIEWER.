@@ -16,9 +16,8 @@ WORKDIR /app
 COPY . .
 
 RUN mkdir -p public && \
-    g++ server.cpp -o reviewhub \
-      -std=c++17 -O2 -pthread \
+    g++ -std=c++17 -O2 server.cpp -o reviewhub \
       -I/usr/include/postgresql \
-      -lssl -lcrypto -lpq
+      -pthread -lssl -lcrypto -lpq
 
 CMD ["./reviewhub"]
