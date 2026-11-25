@@ -351,7 +351,6 @@ int main() {
     buf << ifs.rdbuf();
     res.set_content(buf.str(), "text/html");
 });
-    }
 
     std::cout << "ReviewHub connected to database; listening on port " << port << "\n";
     if (!server.listen("0.0.0.0", port)) {
