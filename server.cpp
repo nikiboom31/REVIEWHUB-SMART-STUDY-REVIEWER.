@@ -3,7 +3,6 @@
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 #include <nlohmann/json.hpp>
-
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
