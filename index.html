@@ -82,6 +82,7 @@ $('onlineSearch').addEventListener('input',()=>setPortalLinks($('onlineSearch').
 $('onlineSearchForm').addEventListener('submit',async e=>{e.preventDefault();const term=$('onlineSearch').value.trim();if(!term)return;setPortalLinks(term);$('onlineStatus').textContent='Searching Wikipedia educational references…';$('onlineResults').innerHTML='';try{const url='https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch='+encodeURIComponent(term)+'&gsrlimit=8&prop=extracts&exintro=1&explaintext=1&exchars=420&format=json&origin=*';const response=await fetch(url);if(!response.ok)throw new Error('Online search is temporarily unavailable.');const data=await response.json();const pages=Object.values(data.query?.pages||{});if(!pages.length){$('onlineStatus').textContent='No online results found. Try a broader keyword.';return}$('onlineStatus').textContent='Found '+pages.length+' online reference results. These are external articles, not REVIEWHUB-authored lessons.';$('onlineResults').innerHTML=pages.map(page=>`<article class="online-card"><span class="pill">ONLINE REFERENCE</span><h3>${safe(page.title||'Untitled')}</h3><p>${safe(page.extract||'Open the article to read more.')}</p><a href="https://en.wikipedia.org/?curid=${encodeURIComponent(page.pageid)}" target="_blank" rel="noopener noreferrer">Read reference ↗</a></article>`).join('')}catch(err){$('onlineStatus').textContent=err.message+' You can still use the Khan Academy, OpenStax, and MIT OpenCourseWare links.';$('onlineResults').innerHTML=''}});
 
 checkSession();
+  </script>
   <style>
   #rh-lesson-backdrop {
     position: fixed;
@@ -558,5 +559,4 @@ checkSession();
     }
   }, true);
 })();
-</script>
 </script></body></html>
