@@ -119,38 +119,42 @@ int main() {
         return 1;
     }
 
-    try {
-        query(db,
-            "CREATE TABLE IF NOT EXISTS rh_users("
-            "  id BIGSERIAL PRIMARY KEY,"
-            "  email TEXT UNIQUE NOT NULL,"
-            "  salt TEXT NOT NULL,"
-            "  password_hash TEXT NOT NULL"
-            ");"
-            "CREATE TABLE IF NOT EXISTS rh_topics("
-            "  id BIGSERIAL PRIMARY KEY,"
-            "  user_id BIGINT NOT NULL REFERENCES rh_users(id) ON DELETE CASCADE,"
-            "  title TEXT NOT NULL,"
-            "  subject TEXT NOT NULL,"
-            "  content TEXT NOT NULL,"
-            "  question TEXT NOT NULL,"
-            "  answer TEXT NOT NULL,"
-            "  quiz_question TEXT NOT NULL,"
-            "  choices TEXT NOT NULL,"
-            "  correct TEXT NOT NULL"
-            ");"
-            "CREATE TABLE IF NOT EXISTS rh_sessions("
-            "  token TEXT PRIMARY KEY,"
-            "  user_id BIGINT NOT NULL REFERENCES rh_users(id) ON DELETE CASCADE,"
-            "  expires_at TIMESTAMPTZ NOT NULL"
-            ");"
-            "CREATE INDEX IF NOT EXISTS rh_topics_user_id_idx ON rh_topics(user_id);"
-            "CREATE INDEX IF NOT EXISTS rh_sessions_expiry_idx ON rh_sessions(expires_at);");
-    } catch (const std::exception& e) {
-        std::cerr << "Database setup failed: " << e.what() << "\n";
-        PQfinish(db);
-        return 1;
-    }
+   try {
+    query(db,
+        "CREATE TABLE IF NOT EXISTS rh_users("
+        "  id BIGSERIAL PRIMARY KEY,"
+        "  email TEXT UNIQUE NOT NULL,"
+        "  salt TEXT NOT NULL,"
+        "  password_hash TEXT NOT NULL"
+        ");");
+    query(db,
+        "CREATE TABLE IF NOT EXISTS rh_topics("
+        "  id BIGSERIAL PRIMARY KEY,"
+        "  user_id BIGINT NOT NULL REFERENCES rh_users(id) ON DELETE CASCADE,"
+        "  title TEXT NOT NULL,"
+        "  subject TEXT NOT NULL,"
+        "  content TEXT NOT NULL,"
+        "  question TEXT NOT NULL,"
+        "  answer TEXT NOT NULL,"
+        "  quiz_question TEXT NOT NULL,"
+        "  choices TEXT NOT NULL,"
+        "  correct TEXT NOT NULL"
+        ");");
+    query(db,
+        "CREATE TABLE IF NOT EXISTS rh_sessions("
+        "  token TEXT PRIMARY KEY,"
+        "  user_id BIGINT NOT NULL REFERENCES rh_users(id) ON DELETE CASCADE,"
+        "  expires_at TIMESTAMPTZ NOT NULL"
+        ");");
+    query(db,
+        "CREATE INDEX IF NOT EXISTS rh_topics_user_id_idx ON rh_topics(user_id);");
+    query(db,
+        "CREATE INDEX IF NOT EXISTS rh_sessions_expiry_idx ON rh_sessions(expires_at);");
+} catch (const std::exception& e) {
+    std::cerr << "Database setup failed: " << e.what() << "\n";
+    PQfinish(db);
+    return 1;
+}
 
     httplib::Server server;
     server.set_default_headers({
