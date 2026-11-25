@@ -13,7 +13,7 @@
 
 using json = nlohmann::json;
 static std::unordered_map<std::string, long long> sessions;
-@@ -51,8 +51,19 @@ bool validEmail(const std::string& email) {
+bool validEmail(const std::string& email) {
 return email.size()<=254 && email.find('@')!=std::string::npos && email.find('.')!=std::string::npos;
 }
 int main() {
@@ -34,7 +34,7 @@ sqlite3* db=nullptr;
 const char* schema =
 "PRAGMA foreign_keys=ON;"
 "CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT,email TEXT UNIQUE NOT NULL,salt TEXT NOT NULL,password_hash TEXT NOT NULL);"
-@@ -86,16 +97,16 @@ int main() {
+int main() {
 sqlite3_finalize(st);if(!uid){jsonResponse(res,401,{{"error","Incorrect email or password."}});return;}
 }
 std::string token=randomHex(32);{std::lock_guard<std::mutex> lock(sessions_mutex);sessions[token]=uid;}
@@ -54,7 +54,7 @@ std::string token=cookieValue(req,"rh_session");{std::lock_guard<std::mutex> loc
 jsonResponse(res,200,{{"ok",true}});
 });
 server.Get("/api/topics",[&](const httplib::Request& req,httplib::Response& res){
-@@ -118,21 +129,15 @@ int main() {
+int main() {
 jsonResponse(res,201,{{"topic",{{"id",id},{"title",title},{"subject",subject},{"content",content},{"question",question},{"answer",answer},{"quizQuestion",quiz},{"choices",choices},{"correct",correct}}}});
 }catch(...){jsonResponse(res,400,{{"error","Invalid reviewer data."}});}
 });
